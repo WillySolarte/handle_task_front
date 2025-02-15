@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios"
 import api from "../lib/axios"
-import { userLoginResponseSchema, userRegisterResponseSchema } from "../schemas"
+import { getUserAuthenticatedSchema, userLoginResponseSchema, userRegisterResponseSchema } from "../schemas"
 import { TLoginForm, TRegisterForm } from "../types"
 
 
@@ -48,7 +48,6 @@ export async function login(formData: TLoginForm){
         const response = userLoginResponseSchema.safeParse(data)
         if(response.success){
             
-            //localStorage.setItem('AUTH_TOKEN', response.data.data!)
             return response.data
         }
     } catch (error) {
@@ -64,4 +63,24 @@ export function userExist() : boolean{
     return !!exist
     
 
+}
+
+export async function getUser(){
+
+    try {
+        const url = `/user/user-authenticated`
+        const {data} = await api.get(url)
+        const response = getUserAuthenticatedSchema.safeParse(data)
+        
+        if(response.success){
+            console.log(response.data.data)
+            return response.data.data
+        }
+        
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            
+            throw new Error(error.response.data.message)
+        }
+    }
 }

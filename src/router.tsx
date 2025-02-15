@@ -6,6 +6,8 @@ import RegisterUserView from "./views/auth/RegisterUserView";
 import ConfirmAccountView from "./views/auth/ConfirmAccountView";
 import DefaultErrorView from "./views/DefaultErrorView";
 import LoginUserView from "./views/auth/LoginUserView";
+import ProyectLayout from "./layouts/ProyectLayout";
+import DashBoardView from "./views/project/DashBoardView";
 
 export default function Router() {
   return (
@@ -15,6 +17,7 @@ export default function Router() {
 
         <Route element={<InitLayout />} >
           <Route path="/" element={<InitView />} index />
+          
 
         </Route>
         <Route element={<AuthLayout />} >
@@ -23,6 +26,14 @@ export default function Router() {
           <Route path='/user/login' element={<LoginUserView/>} />
           
         </Route>
+        <Route element={<ProyectLayout />} >
+            <Route path='/project/dashboard' element={<DashBoardView />} index />
+          
+          
+          </Route>
+
+        
+
         <Route path='*' element={ <DefaultErrorView/> } />
 
       </Routes>
