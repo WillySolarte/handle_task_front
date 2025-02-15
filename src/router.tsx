@@ -8,6 +8,8 @@ import DefaultErrorView from "./views/DefaultErrorView";
 import LoginUserView from "./views/auth/LoginUserView";
 import ProyectLayout from "./layouts/ProyectLayout";
 import DashBoardView from "./views/project/DashBoardView";
+import CreateProjectView from "./views/project/CreateProjectView";
+import DetailsProjectView from "./views/project/DetailsProjectView";
 
 export default function Router() {
   return (
@@ -28,6 +30,8 @@ export default function Router() {
         </Route>
         <Route element={<ProyectLayout />} >
             <Route path='/project/dashboard' element={<DashBoardView />} index />
+            <Route path="/project/create" element={<CreateProjectView/>} />
+            <Route path="/projects/project/:projectId" element={<DetailsProjectView/>} />
           
           
           </Route>

@@ -73,7 +73,6 @@ export async function getUser(){
         const response = getUserAuthenticatedSchema.safeParse(data)
         
         if(response.success){
-            console.log(response.data.data)
             return response.data.data
         }
         
