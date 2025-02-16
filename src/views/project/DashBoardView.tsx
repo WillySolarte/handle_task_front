@@ -94,7 +94,7 @@ export default function DashBoardView() {
           ))}
         </ul>
       ) : (
-        <p className="text-center py-20">No hay proyectos aún.. {''} <Link className="text-fuchsia-500 font-bold" to='/projects/create'>Crear Proyecto</Link> </p>
+        <p className="text-center py-20">No hay proyectos aún.. {''} <Link className="text-fuchsia-500 font-bold" to='/project/create'>Crear Proyecto</Link> </p>
       )}
 
       <DeleteProjectModal/>

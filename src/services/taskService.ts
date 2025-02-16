@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
-import { Project, Task, TaskFormData } from "../schemas";
+import { Project, Task, taskAuxiliar, TaskFormData } from "../schemas";
 
 
 type TaskProps = {
@@ -27,6 +27,8 @@ export async function createTask({formData, projectId} : Pick<TaskProps, 'formDa
     }
 
 }
+
+//Modificar
 export async function deleteTask({taskId, projectId} :  Pick<TaskProps,  'taskId' | 'projectId' >){
     
     try {
@@ -41,12 +43,49 @@ export async function deleteTask({taskId, projectId} :  Pick<TaskProps,  'taskId
     }
 }
 
+export async function updateTask({taskId, projectId, formData} :  Pick<TaskProps,  'taskId' | 'projectId' | 'formData' >){
+    
+    try {
+        const url = `/task/update-task/${projectId}/${taskId}`
+        const {data} = await api.patch(url, formData)
+        return data
+        
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+
+//ya estan
 export async function updateStatus({taskId, projectId, status} :  Pick<TaskProps,  'taskId' | 'projectId' | 'status' >){
     
     try {
-        const url = `/projects/tasks/status/${projectId}/${taskId}`
-        const {data} = await api.post<string>(url, {status})
+        const url = `/task/update-status/${projectId}/${taskId}`
+        const {data} = await api.post(url, {status})
         return data
+        
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+
+export async function getTaskById({taskId, projectId} :  Pick<TaskProps,  'taskId' | 'projectId' >){
+    
+    try {
+        const url = `/task/get-task/${projectId}/${taskId}`
+        const {data} = await api.get(url)
+        
+        const response = taskAuxiliar.safeParse(data.data)
+        
+        if(response.success){
+            return response.data
+        }
+        
         
     } catch (error) {
         if(isAxiosError(error) && error.response){

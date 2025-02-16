@@ -5,6 +5,10 @@ import { useAuth } from "../../hooks/useAuth";
 import { getProjectById } from "../../services/projectService";
 import { isManager } from "../../helpers/polices";
 import AddTaskModal from "../../components/task/AddTaskModal";
+import TaskList from "../../components/task/TaskList";
+import { useMemo } from "react";
+import TaskModalDetails from "../../components/task/TaskModalDetails";
+import EditTaskData from "../../components/task/EditTaskData";
 
 export default function DetailsProjectView() {
 
@@ -20,7 +24,7 @@ export default function DetailsProjectView() {
     queryFn: () => getProjectById(projectID),
     retry: false
   })
-  //const canEdit = useMemo( () => data?.manager === user?._id ,[data, user])
+  const canEdit = useMemo( () => data?.manager === user?.id ,[data, user])
 
   if(isLoading && authLoading){
     return "Cargando..."
@@ -29,7 +33,6 @@ export default function DetailsProjectView() {
     return <Navigate to='/404' />
   } 
 
-  
   if(data && user) return (
     
     <>
@@ -43,7 +46,11 @@ export default function DetailsProjectView() {
         </nav>
       )}
       
+      
+      <TaskList  tasks={data.task} canEdit={canEdit} />
       <AddTaskModal/>
+      <EditTaskData/>
+      <TaskModalDetails/>
     </>
 
 
