@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios"
 import api from "../lib/axios"
-import { getUserAuthenticatedSchema, userLoginResponseSchema, userRegisterResponseSchema } from "../schemas"
+import { CheckPasswordForm, generalSchema, getUserAuthenticatedSchema, userLoginResponseSchema, userRegisterResponseSchema } from "../schemas"
 import { TLoginForm, TRegisterForm } from "../types"
 
 
@@ -80,6 +80,25 @@ export async function getUser(){
         if(isAxiosError(error) && error.response){
             
             throw new Error(error.response.data.message)
+        }
+    }
+}
+export async function checkPassword(formData: CheckPasswordForm){
+
+    try {
+        const url = `/user/check-password`
+        const {data} = await api.post(url, formData)
+        
+        const response = generalSchema.safeParse(data)
+        
+        if(response.success){
+            return response.data.msg
+        }
+        
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            
+            throw new Error('No autorizado')
         }
     }
 }

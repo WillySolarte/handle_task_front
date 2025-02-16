@@ -4,6 +4,7 @@ import { useParams, Navigate, useNavigate, useLocation, Link } from "react-route
 import { useAuth } from "../../hooks/useAuth";
 import { getProjectById } from "../../services/projectService";
 import { isManager } from "../../helpers/polices";
+import AddTaskModal from "../../components/task/AddTaskModal";
 
 export default function DetailsProjectView() {
 
@@ -42,7 +43,7 @@ export default function DetailsProjectView() {
         </nav>
       )}
       
-      
+      <AddTaskModal/>
     </>
 
 

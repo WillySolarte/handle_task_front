@@ -10,6 +10,7 @@ import ProyectLayout from "./layouts/ProyectLayout";
 import DashBoardView from "./views/project/DashBoardView";
 import CreateProjectView from "./views/project/CreateProjectView";
 import DetailsProjectView from "./views/project/DetailsProjectView";
+import EditProjectView from "./views/project/EditProjectView";
 
 export default function Router() {
   return (
@@ -32,6 +33,7 @@ export default function Router() {
             <Route path='/project/dashboard' element={<DashBoardView />} index />
             <Route path="/project/create" element={<CreateProjectView/>} />
             <Route path="/projects/project/:projectId" element={<DetailsProjectView/>} />
+            <Route path="/projects/edit/:projectId" element={<EditProjectView/>} />
           
           
           </Route>

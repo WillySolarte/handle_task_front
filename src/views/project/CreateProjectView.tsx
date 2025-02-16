@@ -28,7 +28,7 @@ export default function CreateProjectView() {
         onSuccess: (response) => {
             toast.success(response)
             reset()
-            navigate('/')
+            navigate('/project/dashboard')
         }
     })
 

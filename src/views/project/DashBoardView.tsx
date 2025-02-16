@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Menu, Transition } from "@headlessui/react"
 import { useAuth } from "../../hooks/useAuth"
 import { getAllProjects } from "../../services/projectService"
+import DeleteProjectModal from "../../components/project/DeleteProjectModal"
 
 
 export default function DashBoardView() {
@@ -96,7 +97,7 @@ export default function DashBoardView() {
         <p className="text-center py-20">No hay proyectos aún.. {''} <Link className="text-fuchsia-500 font-bold" to='/projects/create'>Crear Proyecto</Link> </p>
       )}
 
-
+      <DeleteProjectModal/>
     </>
   )
 }

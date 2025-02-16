@@ -12,6 +12,12 @@ export const userLoginResponseSchema = z.object({
     data: z.string()
 })
 
+export const generalSchema = z.object({
+    msg: z.string(),
+    state: z.string(),
+    data: z.string()
+})
+
 export const getUserAuthenticatedSchema = z.object({
     msg: z.string(),
     state: z.string(),
@@ -94,6 +100,8 @@ export type TaskAuxiliar = z.infer< typeof taskAuxiliar>
 
 /**Projects */
 
+
+
 export const projectSchema = z.object({
     _id: z.string(),
     projectName: z.string(),
@@ -101,6 +109,12 @@ export const projectSchema = z.object({
     description: z.string(),
     task: z.array(taskSchema),
     manager: z.string(userSchema.pick({_id: true}))
+})
+export const responseOneProjectSchema = z.object({
+    msg: z.string(),
+    state: z.string(),
+    data: projectSchema
+    
 })
 
 
@@ -116,6 +130,9 @@ export const dashBoardProjectsSchema = z.array(
 
 export type Project = z.infer<typeof projectSchema>
 export type ProjectFormData = Pick<Project, 'projectName' | 'clientName' | 'description'>
+export type CheckPasswordForm = {
+    password: string
+}
 
 /**Team */
 

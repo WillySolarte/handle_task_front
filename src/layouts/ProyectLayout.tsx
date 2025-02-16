@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import Header from "../components/header/Header";
+import { ToastContainer } from "react-toastify"
 
 export default function ProyectLayout() {
     const { data, isError, isLoading } = useAuth()
@@ -12,11 +13,12 @@ export default function ProyectLayout() {
     }
     if (data) return (
         <div>
-            <Header/>
+            <Header />
             <section className="max-w-screen-2xl mx-auto mt-10 p-5 min-h-screen">
-            
-            <Outlet />
-        </section>
+
+                <Outlet />
+            </section>
+            <ToastContainer pauseOnFocusLoss={false} pauseOnHover={false} />
         </div>
     )
 }
