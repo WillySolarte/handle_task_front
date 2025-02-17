@@ -11,6 +11,7 @@ import { updateStatus } from "../../services/taskService";
 import DropTask from "./DropTask";
 import TaskCard from "./TaskCard";
 import { statusTranslation } from "../../locales/es";
+import { useState } from "react";
 
 type TaskListProps = {
   tasks: Task[];
@@ -45,7 +46,9 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
   const params = useParams()
   const projectId = params.projectId!
 
+  const [taskFilter, setTaskFilter] = useState(tasks)
 
+  
   const {mutate} = useMutation({
     mutationFn: updateStatus,
     onError: () => {
@@ -56,10 +59,22 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
       
       toast.success(dataM.msg)
     }
-})
+} )
+  function handleTaskFilter(evt: React.ChangeEvent<HTMLSelectElement>){
+
+    if(evt.target.value === '' || evt.target.value === 'all'){
+      setTaskFilter(tasks)
+    }
+    else{
+      const aux = tasks.filter((currentTask) => currentTask.status === evt.target.value)
+      setTaskFilter(aux)
+    }
+    
+    
+  }
 
 
-  const groupedTasks = tasks.reduce((acc, task) => {
+  const groupedTasks = taskFilter.reduce((acc, task) => {
     let currentGroup = acc[task.status] ? [...acc[task.status]] : [];
     currentGroup = [...currentGroup, task];
     return { ...acc, [task.status]: currentGroup };
@@ -68,22 +83,30 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
   function handleDragEnd(e: DragEndEvent){
     const {over, active} = e
     if(over && over.id){
-      const taskId = active.id.toString() //Es el valor único que le dimos a useDraggable
-      const status = over.id as TaskStatus //Es el valor único que le dimos al useDroppable
+      const taskId = active.id.toString() 
+      const status = over.id as TaskStatus 
       mutate({projectId, taskId, status})
 
       
     }
   }
-  /**
-   * en el Object entries creamos un arreglo de arreglos, donde cada arreglo tendrá una llave
-   * y un valor, hacemos un array destructuring dentro del map sacando la primera posición y dandole
-   * el nombre de status y a la segunda el nombre de tarea 
-   */
+  
+  
   return (
     <>
       <h2 className="text-5xl font-black my-10">Tareas</h2>
-
+      <div className="flex border border-purple-700 w-[400px] mb-10 p-5">
+        <label htmlFor="slcStatus" className="mr-3 roboto font-bold text-purple-700">Filtrar por Status</label>
+        <select onChange={handleTaskFilter} id="slcStatus" className="roboto w-56 border border-gray-300 focus:outline-purple-700 text-center">
+          <option value="">--Selecciona--</option>
+          <option value="onHold">En Espera</option>
+          <option value="pending">Pendiente</option>
+          <option value="inProgres">En Progreso</option>
+          <option value="underReview">En Revisión</option>
+          <option value="completed">Completada</option>
+          <option value="all">Todas</option>
+        </select>
+      </div>
       <div className="flex gap-5 overflow-x-scroll 2xl:overflow-auto pb-32">
         <DndContext onDragEnd={handleDragEnd}>
           {Object.entries(groupedTasks).map(([status, tasks]) => (
