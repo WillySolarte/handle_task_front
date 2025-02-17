@@ -18,8 +18,8 @@ export default function Header() {
   }
 
   return (
-    <header className="w-full h-24 shadow-xl flex justify-between items-center px-10">
-      <Link to={'/'} className="text-4xl font-bold"><span className="text-purple-700">Project</span> Manager </Link>
+    <header className="w-full h-32 shadow-xl flex justify-between items-center px-10">
+      <Link to={'/'} className="text-5xl font-bold"><span className="text-purple-700">Project</span> Manager </Link>
       {exit ? (
 
         <div className="flex space-x-3">

@@ -91,9 +91,8 @@ export default function LoginUserView() {
                 <button type="submit" className="bg-purple-800 text-white w-full my-2 h-9 rounded-md hover:bg-purple-600 select-none">Ingresar</button>
 
                 <hr className="border border-gray-200 my-6" />
-                <div className="flex justify-between">
+                <div className="flex justify-center">
                     <Link to={'/user/register'} className="text-sm hover:text-red-700 hover:underline select-none" > Registrate</Link>
-                    <Link to={'/'} className="text-sm hover:text-red-700 hover:underline select-none" > Olvidé mi contraseña </Link>
                 </div>
 
             </form>
