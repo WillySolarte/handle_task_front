@@ -18,7 +18,7 @@ export async function createTask({formData, projectId} : Pick<TaskProps, 'formDa
     try {
     
         const data = await api.post(url, formData);
-        return data
+        return data.data
     
     } catch (error) {
         if(isAxiosError(error) && error.response){
@@ -28,17 +28,17 @@ export async function createTask({formData, projectId} : Pick<TaskProps, 'formDa
 
 }
 
-//Modificar
+
 export async function deleteTask({taskId, projectId} :  Pick<TaskProps,  'taskId' | 'projectId' >){
     
     try {
-        const url = `/projects/tasks/${projectId}/${taskId}`
-        const {data} = await api.delete<string>(url)
+        const url = `/task/delete-task/${projectId}/${taskId}`
+        const {data} = await api.delete(url)
         return data
         
     } catch (error) {
         if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
+            throw new Error(error.response.data.msg)
         }
     }
 }
@@ -58,7 +58,7 @@ export async function updateTask({taskId, projectId, formData} :  Pick<TaskProps
 }
 
 
-//ya estan
+
 export async function updateStatus({taskId, projectId, status} :  Pick<TaskProps,  'taskId' | 'projectId' | 'status' >){
     
     try {

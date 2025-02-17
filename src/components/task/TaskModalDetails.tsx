@@ -36,7 +36,8 @@ export default function TaskModalDetails() {
         onSuccess: (dataM) => {
             queryClient.invalidateQueries({queryKey: ['project', projectId]})
             queryClient.invalidateQueries({queryKey: ['task', taskId]})
-            toast.success(dataM)
+            
+            toast.success(dataM.msg)
         }
     })
     //Con use effect garantizamos que el redireccionamiento se haga después de reenderizar por completo el componente

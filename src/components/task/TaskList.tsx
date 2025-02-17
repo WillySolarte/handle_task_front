@@ -48,12 +48,13 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
 
   const {mutate} = useMutation({
     mutationFn: updateStatus,
-    onError: (error) => {
-      toast.error(error.message)
+    onError: () => {
+      toast.error('Error')
     },
     onSuccess: (dataM) => {
       queryClient.invalidateQueries({queryKey: ['project', projectId]})
-      toast.success(dataM)
+      
+      toast.success(dataM.msg)
     }
 })
 
