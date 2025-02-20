@@ -11,6 +11,7 @@ import { updateStatus } from "../../services/taskService";
 import DropTask from "./DropTask";
 import TaskCard from "./TaskCard";
 import { statusTranslation } from "../../locales/es";
+import { useEffect, useState } from "react";
 
 type TaskListProps = {
   tasks: Task[];
@@ -45,7 +46,8 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
   const params = useParams()
   const projectId = params.projectId!
 
-
+  const [taskStatus, setTaskStatus] = useState(tasks)
+  const [currentStatus, setCurrentStatus] = useState('')
   
   const {mutate} = useMutation({
     mutationFn: updateStatus,
@@ -58,10 +60,35 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
       toast.success(dataM.msg)
     }
 } )
+
+  useEffect(() => {
+    updateCurrentTask()
+  },[tasks])
   
+  function handleTaskStatus(evt: React.ChangeEvent<HTMLSelectElement>){
+
+      setCurrentStatus(evt.target.value)
+      if(evt.target.value === 'all' || evt.target.value === ''){
+        setTaskStatus(tasks)
+      }
+      else{
+        const tasksFilter = tasks.filter(current => current.status === evt.target.value);
+        setTaskStatus(tasksFilter)
+      }
+  }
+  function updateCurrentTask(){
+    if(currentStatus === 'all' || currentStatus === ''){
+      setTaskStatus(tasks)
+    }
+    else{
+      const tasksFilter = tasks.filter(current => current.status === currentStatus);
+      setTaskStatus(tasksFilter)
+    }
+    
+  }
 
 
-  const groupedTasks = tasks.reduce((acc, task) => {
+  const groupedTasks = taskStatus.reduce((acc, task) => {
     let currentGroup = acc[task.status] ? [...acc[task.status]] : [];
     currentGroup = [...currentGroup, task];
     return { ...acc, [task.status]: currentGroup };
@@ -82,6 +109,18 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
   return (
     <>
       <h2 className="text-5xl font-black my-10">Tareas</h2>
+      <div className="w-[400px] border border-purple-700 flex justify-evenly items-center h-14 mb-5">
+        <label htmlFor="slcStatus" className="font-bold roboto text-purple-700 select-none">Filtrar por status</label>
+        <select onChange={handleTaskStatus} id="slcStatus" className="focus:outline-purple-400 w-[200px] text-center border border-gray-300">
+          <option value="">-- Seleccionar --</option>
+          <option value="completed">Completada</option>
+          <option value="underReview">En Revisión</option>
+          <option value="inProgres">En Progreso</option>
+          <option value="pending">Pendiente</option>
+          <option value="onHold">En Espera</option>
+          <option value="all">Todas</option>
+        </select>
+      </div>
       
       <div className="flex gap-5 overflow-x-scroll 2xl:overflow-auto pb-32">
         <DndContext onDragEnd={handleDragEnd}>
