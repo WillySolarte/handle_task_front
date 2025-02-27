@@ -1,6 +1,6 @@
 import api from "../lib/axios"
 import { isAxiosError } from "axios";
-import { dashBoardProjectsSchema, Project, ProjectFormData } from "../schemas";
+import { dashBoardProjectsSchema, Project, ProjectFormData, projectSchema } from "../schemas";
 
 export async function getAllProjects(){
 
@@ -41,10 +41,11 @@ export async function getProjectById(id: Project['_id']){
     const url = `/project/get-project/${id}`;
     try {
         const {data} = await api.get(url)
-        
-        if(data.state === 'ok'){
-            return data.data
+        const result = projectSchema.safeParse(data)
+        if(result.success){
+            return result.data
         }
+        
         
     } catch (error) {
         if(isAxiosError(error) && error.response){
@@ -60,10 +61,10 @@ type ProjectEditApiType = {
 export async function updateProject({projectID, formData} : ProjectEditApiType){
 
     const url = `/project/update-project/${projectID}`
-
+    console.log('carajo')
     try {
-        const {data} = await api.patch(url, formData)
-        
+        const {data} = await api.patch<string>(url, formData)
+        console.log(data)
         return data
         
     } catch (error) {

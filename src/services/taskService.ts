@@ -17,12 +17,12 @@ export async function createTask({formData, projectId} : Pick<TaskProps, 'formDa
 
     try {
     
-        const data = await api.post(url, formData);
-        return data.data
+        const {data} = await api.post(url, formData);
+        return data
     
     } catch (error) {
         if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
+            throw new Error(error.response.data.message)
         }
     }
 
@@ -38,7 +38,7 @@ export async function deleteTask({taskId, projectId} :  Pick<TaskProps,  'taskId
         
     } catch (error) {
         if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.msg)
+            throw new Error(error.response.data.message)
         }
     }
 }
@@ -52,7 +52,7 @@ export async function updateTask({taskId, projectId, formData} :  Pick<TaskProps
         
     } catch (error) {
         if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
+            throw new Error(error.response.data.message)
         }
     }
 }
@@ -63,12 +63,14 @@ export async function updateStatus({taskId, projectId, status} :  Pick<TaskProps
     
     try {
         const url = `/task/update-status/${projectId}/${taskId}`
-        const {data} = await api.post(url, {status})
-        return data
+        const data = await api.post<string>(url, {status})
+        
+        return data.data
         
     } catch (error) {
         if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
+            
+            throw new Error(error.response.data.message)
         }
     }
 }
@@ -80,7 +82,7 @@ export async function getTaskById({taskId, projectId} :  Pick<TaskProps,  'taskI
         const url = `/task/get-task/${projectId}/${taskId}`
         const {data} = await api.get(url)
         
-        const response = taskAuxiliar.safeParse(data.data)
+        const response = taskAuxiliar.safeParse(data)
         
         if(response.success){
             return response.data
@@ -89,7 +91,7 @@ export async function getTaskById({taskId, projectId} :  Pick<TaskProps,  'taskI
         
     } catch (error) {
         if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
+            throw new Error(error.response.data.message)
         }
     }
 }

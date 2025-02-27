@@ -30,14 +30,14 @@ export default function TaskModalDetails() {
     })
     const {mutate} = useMutation({
         mutationFn: updateStatus,
-        onError: (error) => {
-            toast.error(error.message)
+        onError: () => {
+            //toast.error(error.message)
         },
-        onSuccess: (dataM) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['project', projectId]})
             queryClient.invalidateQueries({queryKey: ['task', taskId]})
             
-            toast.success(dataM.msg)
+            //toast.success(dataM)
         }
     })
     //Con use effect garantizamos que el redireccionamiento se haga después de reenderizar por completo el componente

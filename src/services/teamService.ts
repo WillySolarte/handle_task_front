@@ -14,7 +14,7 @@ export async function findUserByEmail( formData: TeamMemberForm){
         
     } catch (error) {
         if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data)
+            throw new Error(error.response.data.message)
         }
     }
 }
@@ -29,8 +29,8 @@ export async function addUserToProject({projectId, id} : {projectId: Project['_i
         
     } catch (error) {
         if(isAxiosError(error) && error.response){
-            
-            throw new Error(error.response.data)
+            console.log(error.response.data)
+            throw new Error(error.response.data.message)
         }
     }
 }
@@ -40,7 +40,7 @@ export async function getProjectTeam(projectId: Project['_id']){
     try {
         const url = `/project/get-project-team/${projectId}`
         const {data} = await api.get(url)
-        const response = teamMembersSchema.safeParse(data.data)
+        const response = teamMembersSchema.safeParse(data)
         if(response.success){
             return response.data
         }
@@ -49,7 +49,7 @@ export async function getProjectTeam(projectId: Project['_id']){
         
     } catch (error) {
         if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
+            throw new Error(error.response.data.message)
         }
     }
 }
@@ -59,13 +59,14 @@ export async function removeUserToProject({projectId, userId} : {projectId: Proj
     try {
         const url = `/project/remove-member-by-id/${projectId}/${userId}`
         const {data} = await api.delete(url)
-        return data.msg
+        console.log(data)
+        return data
         
         
     } catch (error) {
         if(isAxiosError(error) && error.response){
-            
-            throw new Error(error.response.data)
+            console.log(error.response)
+            throw new Error(error.response.data.message)
         }
     }
 }

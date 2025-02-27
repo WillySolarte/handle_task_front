@@ -29,11 +29,11 @@ export default function TaskCard({ task, canEdit }: TaskCardProps) {
   const {mutate} = useMutation({
     mutationFn: deleteTask,
     onSuccess: (data) => {
-      toast.success(data.msg)
+      toast.success(data)
       queryClient.invalidateQueries({queryKey: ['project', projectId]})
     },
-    onError: () => {
-      toast.error('Error')
+    onError: (error) => {
+      toast.error(error.message)
     }
   })
   
